@@ -31,7 +31,6 @@ int main(void)
 	initAnimalName();
 
 	shuffleAnimal();
-//	system("cls");
 	
 	int failCount = 0;
 
@@ -45,10 +44,12 @@ int main(void)
 		printQuestion();
 		printf("뒤집을 카드를 2개 고르세요  >>  ");
 		scanf_s("%d %d", &select1, &select2);
-//		system("cls");
 
-		if (select1 == select2)
+		if ((select1 == select2) ||
+			(1 > select1 || select1 > height * width) ||
+			(1 > select2 || select2 > height * width))
 		{
+			printf("잘못된 값을 입력하셨습니다\n\n");
 			continue;
 		}
 
@@ -88,7 +89,14 @@ int main(void)
 			break;
 		}
 	}
-	
+	for (int i = 0; i < width; i++)
+	{
+		free(animalArray[i]);
+		free(checkAnimal[i]);
+	}
+	free(animalArray);
+	free(checkAnimal);
+	free(strAnimal);
 	return 0;
 }
 
