@@ -59,18 +59,14 @@ int main(void)
 		printf("%s 난이도\n", strDifficulty);
 		printAnimals(); //정답표시모드
 		printQuestion();
-		printf("뒤집을 카드를 2개 고르세요 >> ");
+		printf("뒤집을 카드를 2개 고르세요  >>  ");
+		scanf_s("%d %d", &select1, &select2);
 
-		scanf("%d %d", &select1, &select2);
-		//		system("cls");
-
-		if ((select1 < 1 || select1 > height * width) || (select2 < 1 || select2 > height * width)) {
-			printf("올바르지 않은 수 입니다: %d, %d\n", select1, select2);
-			continue;
-		}
-		else if (select1 == select2)
+		if ((select1 == select2) ||
+			(1 > select1 || select1 > height * width) ||
+			(1 > select2 || select2 > height * width))
 		{
-			printf("같은 수 2개는 고를 수 없습니다\n");
+			printf("잘못된 값을 입력하셨습니다\n\n");
 			continue;
 		}
 
@@ -107,7 +103,6 @@ int main(void)
 			break;
 		}
 	}
-
 	return 0;
 }
 
