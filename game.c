@@ -4,10 +4,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-int **animalArray;
-int **checkAnimal;
-const char **strAnimal;
-const char *strDifficulty;
+
+int** animalArray;
+int** checkAnimal;
+const char** strAnimal;
+const char* strDifficulty;
 int difficulty;
 short height = 3;
 short width = 4;
@@ -29,8 +30,7 @@ int main(void)
 	short i = 1;
 	int difficulty;
 
-	while (i--)
-	{
+	while (i--) {
 		printf("(1: 쉬움    2: 보통    3: 어려움)\n");
 		printf("난이도를 선택하세요  >>  ");
 		scanf("%d", &difficulty);
@@ -47,7 +47,7 @@ int main(void)
 	initAnimalName();
 	shuffleAnimal();
 
-	system("cls");
+//	system("cls");
 
 	int failCount = 0;
 
@@ -64,8 +64,7 @@ int main(void)
 		scanf("%d %d", &select1, &select2);
 		//		system("cls");
 
-		if ((select1 < 1 || select1 > height * width) || (select2 < 1 || select2 > height * width))
-		{
+		if ((select1 < 1 || select1 > height * width) || (select2 < 1 || select2 > height * width)) {
 			printf("올바르지 않은 수 입니다: %d, %d\n", select1, select2);
 			continue;
 		}
@@ -82,9 +81,10 @@ int main(void)
 		int secondSelect_y = conv_pos_y(select2 - 1);
 
 		if (checkAnimal[firstSelect_x][firstSelect_y] == 0 &&
-			checkAnimal[secondSelect_x][secondSelect_y] == 0 &&
+			checkAnimal[secondSelect_x][secondSelect_y] == 0
+			&&
 			animalArray[firstSelect_x][firstSelect_y] ==
-				animalArray[secondSelect_x][secondSelect_y])
+			animalArray[secondSelect_x][secondSelect_y])
 		{
 			printf("\n\n정답! %s 발견\n\n", strAnimal[animalArray[firstSelect_x][firstSelect_y]]);
 			checkAnimal[firstSelect_x][firstSelect_y] = 1;
@@ -117,7 +117,7 @@ void initDifficulty(int diff)
 	if (diff == 0)
 	{
 		strDifficulty = "인세인";
-		// exit(0);
+		//exit(0);
 		height = 10;
 		width = 10;
 	}
@@ -140,19 +140,18 @@ void initDifficulty(int diff)
 
 void initAnimalArray()
 {
-	animalArray = (int **)malloc(sizeof(int *) * height);
-	checkAnimal = (int **)malloc(sizeof(int *) * height);
+	animalArray = (int**)malloc(sizeof(int*) * height);
+	checkAnimal = (int**)malloc(sizeof(int*) * height);
 
 	for (int i = 0; i < width; i++)
 	{
-		animalArray[i] = (int *)malloc(sizeof(int) * width);
-		checkAnimal[i] = (int *)malloc(sizeof(int) * width);
+		animalArray[i] = (int*)malloc(sizeof(int) * width);
+		checkAnimal[i] = (int*)malloc(sizeof(int) * width);
 	}
 
 	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0; j < width; j++)
-		{
+		for (int j = 0; j < width; j++) {
 			animalArray[i][j] = -1;
 			checkAnimal[i][j] = 0;
 		}
@@ -162,16 +161,16 @@ void initAnimalArray()
 void initAnimalName()
 {
 	int animalSize = (int)(height * width / 2);
-	strAnimal = (const char **)malloc(sizeof(const char *) * animalSize);
+	strAnimal = (const char**)malloc(sizeof(const char*) * animalSize);
 
-	for (int i = 0; i < animalSize; i++)
-	{
-		strAnimal[i] = (const char *)malloc(sizeof(const char) * (animalSize * 2));
+	for (int i = 0; i < animalSize; i++) {
+		strAnimal[i] = (const char*)malloc(sizeof(const char) * width);
 	}
 
-	const char *animalName[] = {
+	const char* animalName[] = {
 		"펭귄", "고양이", "미어켓", "캥거루", "거미",
-		"나무늘보", "개구리", "tentacle", "요루", "체임버"};
+		"나무늘보", "개구리", "tentacle", "요루", "체임버"
+	};
 
 	for (int i = 0; i < animalSize; i++)
 	{
@@ -189,8 +188,7 @@ void shuffleAnimal()
 			int pos = getEmptyPosition();
 			int x = conv_pos_x(pos);
 			int y = conv_pos_y(pos);
-
-			animalArray[x][y] = i;
+			animalArray[x][y] = i % 10;
 		}
 	}
 }
@@ -227,7 +225,7 @@ void printAnimals()
 	{
 		for (int j = 0; j < width; j++)
 		{
-			// printf("%d ", strAnimal[i][j]);
+//			printf("%d ", animalArray[i][j]);
 			printf("%10s", strAnimal[animalArray[i][j]]);
 		}
 		printf("\n");
