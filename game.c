@@ -111,7 +111,7 @@ int main_a(void)
 		free(checkAnimal[i]);
 	}
 
-//	free(animalArray);
+//	free(animalArray);    //이부분에서 오류가 발생함
 //	free(checkAnimal);
 	free(strAnimal);
 
