@@ -3,13 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-int** animalArray;
-int** checkAnimal;
-const char** strAnimal;
-const char* strDifficulty;
-short height;
-short width;
-
 void initDifficulty(int diff);
 void initAnimalArray();
 void initAnimalName();
@@ -21,22 +14,28 @@ void printAnimals();
 void printQuestion();
 int foundAllAnimals();
 
-int main(void)
+int** animalArray;
+int** checkAnimal;
+const char** strAnimal;
+const char* strDifficulty;
+short height;
+short width;
+
+int main_a(void)
 {
 	srand(time(NULL));
 	short difficulty;
-	short repeat = 1;
 
-	while (repeat--)
+	while (1)
 	{
 		printf("(1: 쉬움    2: 보통    3: 어려움)\n");
 		printf("난이도를 선택하세요  >>   ");
-		scanf_s("%d", &difficulty); 
-		if (0 > difficulty || difficulty > 3)
+		scanf_s("%d", &difficulty);
+		if (!(0 > difficulty || difficulty > 3))
 		{
-			printf("올바른 난이도가 아닙니다. 다시 선택하십시오\n\n");
-			repeat++;
+			break;
 		}
+		printf("올바른 난이도가 아닙니다. 다시 선택하십시오\n\n");
 	}
 
 	initDifficulty(difficulty);
@@ -55,7 +54,7 @@ int main(void)
 		int select1 = 0;
 		int select2 = 0;
 
-		//printAnimals();  //정답표시모드
+		printAnimals();  //정답표시모드
 		printQuestion();
 		printf("\n\n뒤집을 카드를 2개 고르세요  >>  ");
 		scanf_s("%d %d", &select1, &select2);
@@ -105,6 +104,17 @@ int main(void)
 			break;
 		}
 	}
+
+	for (int i = 0; i < width; i++)
+	{
+		free(animalArray[i]);
+		free(checkAnimal[i]);
+	}
+
+//	free(animalArray);
+//	free(checkAnimal);
+	free(strAnimal);
+
 	return 0;
 }
 
@@ -113,7 +123,7 @@ void initDifficulty(int diff)
 	if (diff == 0)
 	{
 		strDifficulty = "INSANE";
-		exit(0);
+		exit(1);
 		height = 10;
 		width = 10;
 	}
@@ -163,11 +173,6 @@ void initAnimalName()
 	int animalSize = (int)(height * width / 2);
 	strAnimal = (const char**)malloc(sizeof(const char*) * animalSize);
 
-	for (int i = 0; i < animalSize; i++)
-	{
-		strAnimal[i] = (const char*)malloc(sizeof(const char) * (animalSize * 2));
-	}
-
 	const char* animalName[] = {
 		"펭귄", "고양이", "미어켓", "캥거루", "거미",
 		"나무늘보", "개구리", "tentacle", "요루", "체임버"
@@ -175,7 +180,7 @@ void initAnimalName()
 
 	for (int i = 0; i < animalSize; i++)
 	{
-		strAnimal[i] = animalName[i % 10];
+		strAnimal[i] = animalName[i];
 	}
 }
 
