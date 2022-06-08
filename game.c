@@ -54,7 +54,7 @@ int main_a(void)
 		int select1 = 0;
 		int select2 = 0;
 
-		printAnimals();  //정답표시모드
+		//printAnimals();  //정답표시모드
 		printQuestion();
 		printf("\n\n뒤집을 카드를 2개 고르세요  >>  ");
 		scanf_s("%d %d", &select1, &select2);
