@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-void initDifficulty(int diff);
+#pragma warning(disable: 6386)
+#pragma warning(disable: 6011)
+
+void initDifficulty(int difficulty, const char** strDifficulty);
 void initAnimalArray();
 void initAnimalName();
 void shuffleAnimal();
@@ -17,28 +20,31 @@ int foundAllAnimals();
 int** animalArray;
 int** checkAnimal;
 const char** strAnimal;
-const char* strDifficulty;
-short height;
-short width;
+unsigned short height;
+unsigned short width;
 
-int main_a(void)
+int main(void)
 {
 	srand(time(NULL));
+
+	const char* strDifficulty;
 	short difficulty;
 
 	while (1)
 	{
 		printf("(1: 쉬움    2: 보통    3: 어려움)\n");
 		printf("난이도를 선택하세요  >>   ");
-		scanf_s("%d", &difficulty);
+		scanf_s("%hd", &difficulty);
+
 		if (!(0 > difficulty || difficulty > 3))
 		{
 			break;
 		}
+
 		printf("올바른 난이도가 아닙니다. 다시 선택하십시오\n\n");
 	}
 
-	initDifficulty(difficulty);
+	initDifficulty(difficulty, &strDifficulty);
 	initAnimalArray();
 	initAnimalName();
 	shuffleAnimal();
@@ -63,12 +69,12 @@ int main_a(void)
 
 		if ((select1 < 1 || select1 > height * width) || (select2 < 1 || select2 > height * width))
 		{
-			printf("올바르지 않은 수 입니다: %d, %d\n", select1, select2);
+			printf("올바르지 않은 수 입니다: %d, %d\n\n\n\n", select1, select2);
 			continue;
 		}
 		else if (select1 == select2)
 		{
-			printf("같은 수 2개는 고를 수 없습니다\n");
+			printf("같은 수 2개는 고를 수 없습니다\n\n\n\n");
 			continue;
 		}
 
@@ -105,65 +111,72 @@ int main_a(void)
 		}
 	}
 
-	for (int i = 0; i < width; i++)
+	for (int i = 0; i < height; i++)
 	{
 		free(animalArray[i]);
 		free(checkAnimal[i]);
 	}
 
-//	free(animalArray);    //이부분에서 오류가 발생함
-//	free(checkAnimal);
-	free(strAnimal);
+	free(animalArray);
+	free(checkAnimal);
+	free((const char**)strAnimal);
 
 	return 0;
 }
 
-void initDifficulty(int diff)
+void initDifficulty(int difficulty, const char** strDifficulty)
 {
-	if (diff == 0)
+	switch (difficulty)
 	{
-		strDifficulty = "INSANE";
-		exit(1);
-		height = 10;
-		width = 10;
-	}
-	else if (diff == 1)
-	{
-		strDifficulty = "쉬움";
-		height = 3;
-		width = 4;
-	}
-	else if (diff == 2)
-	{
-		strDifficulty = "보통";
-		height = 4;
-		width = 4;
-	}
-	else if (diff == 3)
-	{
-		strDifficulty = "어려움";
-		height = 4;
-		width = 5;
+		case 0:
+			*strDifficulty = "INSANE";
+			exit(1);
+			height = 10;
+			width = 10;
+			break;
+
+		case 1:
+			*strDifficulty = "쉬움";
+			height = 3;
+			width = 4;
+			break;
+
+		case 2:
+			*strDifficulty = "보통";
+			height = 4;
+			width = 4;
+			break;
+
+		case 3:
+			*strDifficulty = "어려움";
+			height = 4;
+			width = 5;
+			break;
+
+		default:
+			printf("비정상적인 상황 발생");
+			exit(1);
 	}
 }
 
 void initAnimalArray()
 {
+
 	animalArray = (int**)malloc(sizeof(int*) * height);
 	checkAnimal = (int**)malloc(sizeof(int*) * height);
 
-	for (int i = 0; i < width; i++)
+	for (int i = 0; i < height; i++)
 	{
 		animalArray[i] = (int*)malloc(sizeof(int) * width);
 		checkAnimal[i] = (int*)malloc(sizeof(int) * width);
 	}
 
-	for (int i = 0; i < height; i++)
+	for (int y = 0; y < height; y++)
 	{
-		for (int j = 0; j < width; j++)
+		for (int x = 0; x < width; x++)
 		{
-			animalArray[i][j] = -1;
-			checkAnimal[i][j] = 0;
+			animalArray[y][x] = -1;
+			checkAnimal[y][x] = 0;
 		}
 	}
 }
@@ -234,7 +247,7 @@ void printAnimals()
 		{
 			printf("%10s", strAnimal[animalArray[i][j]]);
 		}
-		printf("\n");
+		printf("\n\n");
 	}
 	printf("\n============================================\n\n");
 }
@@ -254,7 +267,7 @@ void printQuestion()
 				printf("%10d", seq);
 			seq++;
 		}
-		printf("\n");
+		printf("\n\n");
 	}
 }
 
